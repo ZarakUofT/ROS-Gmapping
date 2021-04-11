@@ -49,29 +49,34 @@ private:
     float initLogit;
     figure_handle figure;
     axes_handle axes;
+
+    //Functions
+    void init_maze();
+    void init_figure();
+
+    void processLidarData(float yaw, const LaserInfo* laser_data, const float max_range);
+    
+    void updatePos(float pos_x, float pos_y);
+    void updateOccupancyEstimate(std::vector<std::pair<int, int>>& points_of_interest, bool out_of_range, const uint16_t alpha, const float beta);
+    
+    // Calculates the latest inverse measurement model for a laser scanner and stores it in the cell
+    void updateInverseMeasurement(std::vector<std::pair<int, int>>& points_of_interest, bool dest_out_of_range, const uint16_t alpha, const float beta);\
+    void updateLogitMeasurement(std::vector<std::pair<int, int>>& points_of_interest);
+    void updateProbability(std::vector<std::pair<int, int>>& points_of_interest);
+
 public:
     Maze(uint16_t maze_width, uint16_t maze_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y);
 
     ~Maze();
-    void init_maze();
-    void init_figure();
 
     //gets the position of the of the object in the maze
     std::pair<uint16_t, uint16_t> getPos(float pos_x, float pos_y) const;
 
-    void processLidarData(float yaw, const LaserInfo* laser_data, const float max_range);
     void draw();
     
     // main update function to update the maze
     void update(float pos_x, float pos_y, float yaw, const LaserInfo* laser_data, const float max_range);
 
-    void updatePos(float pos_x, float pos_y);
-    void updateOccupancyEstimate(std::vector<std::pair<int, int>>& points_of_interest, bool out_of_range, const uint16_t alpha, const float beta);
-
-    // Calculates the latest inverse measurement model for a laser scanner and stores it in the cell
-    void updateInverseMeasurement(std::vector<std::pair<int, int>>& points_of_interest, bool dest_out_of_range, const uint16_t alpha, const float beta);\
-    void updateLogitMeasurement(std::vector<std::pair<int, int>>& points_of_interest);
-    void updateProbability(std::vector<std::pair<int, int>>& points_of_interest);
     void update_image();
 
     // printing/logging functions

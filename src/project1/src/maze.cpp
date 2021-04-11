@@ -76,6 +76,7 @@ void Maze::update_image()
     }
 
     this->axes->image(plot_data, true);
+    this->axes->color_box(true);
     this->axes->draw();
 }
 
