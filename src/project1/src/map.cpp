@@ -1,6 +1,6 @@
-#include "maze.h"
+#include "map.h"
 
-Maze::Maze(uint16_t maze_width, uint16_t maze_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y)
+Map::Map(uint16_t maze_width, uint16_t maze_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y)
     :mazeWidth(maze_width + 2), mazeHeight(maze_height + 2), cellSize(cell_size),
         refRow(start_row), refCol(start_col)
 {
@@ -10,12 +10,12 @@ Maze::Maze(uint16_t maze_width, uint16_t maze_height, float cell_size, uint16_t 
     this->updatePos(pos_x, pos_y);
 }
 
-Maze::~Maze()
+Map::~Map()
 {
 
 }
 
-void Maze::init_maze()
+void Map::init_maze()
 {
     this->data.resize(mazeWidth, vector<Cell>(mazeHeight));
     this->initLogit = Math::logit(INIT_PROBABILITY);
@@ -27,7 +27,7 @@ void Maze::init_maze()
     }
 }
 
-void Maze::init_figure() 
+void Map::init_figure() 
 {
     this->figure = gcf();
     this->figure->ioff();
@@ -35,13 +35,13 @@ void Maze::init_figure()
     this->axes->grid(false);
 }
 
-void Maze::update(float posX, float posY, float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
+void Map::update(float posX, float posY, float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
 {
     this->updatePos(posX, posY);
     this->updateMaze(yaw, laser_data, max_range);
 }
 
-std::pair<uint16_t, uint16_t> Maze::getPos(float pos_x, float pos_y) const
+std::pair<uint16_t, uint16_t> Map::getPos(float pos_x, float pos_y) const
 {
     uint16_t row, col;
 
@@ -51,7 +51,7 @@ std::pair<uint16_t, uint16_t> Maze::getPos(float pos_x, float pos_y) const
     return std::make_pair(row, col);
 }
 
-void Maze::updatePos(float pos_x, float pos_y)
+void Map::updatePos(float pos_x, float pos_y)
 {
     std::pair<uint16_t, uint16_t> pos = this->getPos(pos_x, pos_y);
 
@@ -59,12 +59,12 @@ void Maze::updatePos(float pos_x, float pos_y)
     this->currCol = pos.second;    
 }
 
-void Maze::draw()
+void Map::draw()
 {
     this->figure->draw();
 }
 
-void Maze::update_image()
+void Map::update_image()
 {
     // Pass vectors of vector of floats as data
     std::vector<std::vector<float>> plot_data (this->mazeWidth, std::vector<float>(this->mazeHeight));
@@ -80,7 +80,7 @@ void Maze::update_image()
     this->axes->draw();
 }
 
-void Maze::updateMaze(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
+void Map::updateMaze(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
 {
     if (!laser_data)
         return;
@@ -108,7 +108,7 @@ void Maze::updateMaze(float yaw, const std::shared_ptr<LaserInfo> laser_data, co
     }
 }
 
-void Maze::updateOccupancyEstimate(std::vector<std::pair<int, int>>& points_of_interest, bool dest_out_of_range, 
+void Map::updateOccupancyEstimate(std::vector<std::pair<int, int>>& points_of_interest, bool dest_out_of_range, 
                                     const uint16_t alpha, const float beta)
 {
     this->updateInverseMeasurement(points_of_interest, dest_out_of_range, alpha, beta);
@@ -116,7 +116,7 @@ void Maze::updateOccupancyEstimate(std::vector<std::pair<int, int>>& points_of_i
     this->updateProbability(points_of_interest);    
 }
 
-void Maze::updateInverseMeasurement(std::vector<std::pair<int, int>>& points_of_interest, bool dest_out_of_range, 
+void Map::updateInverseMeasurement(std::vector<std::pair<int, int>>& points_of_interest, bool dest_out_of_range, 
                                     const uint16_t alpha, const float beta) 
 {
     //Currently not using beta, but could be incorporated in the future
@@ -134,7 +134,7 @@ void Maze::updateInverseMeasurement(std::vector<std::pair<int, int>>& points_of_
     }
 }
 
-void Maze::updateLogitMeasurement(std::vector<std::pair<int, int>>& points_of_interest) 
+void Map::updateLogitMeasurement(std::vector<std::pair<int, int>>& points_of_interest) 
 {
     for (int i = 0; i < points_of_interest.size(); i++){
 
@@ -143,7 +143,7 @@ void Maze::updateLogitMeasurement(std::vector<std::pair<int, int>>& points_of_in
     }    
 }
 
-void Maze::updateProbability(std::vector<std::pair<int, int>>& points_of_interest)
+void Map::updateProbability(std::vector<std::pair<int, int>>& points_of_interest)
 {
     for (int i = 0; i < points_of_interest.size(); i++){
 
@@ -152,7 +152,7 @@ void Maze::updateProbability(std::vector<std::pair<int, int>>& points_of_interes
     }
 }
 
-void Maze::printProbabilities() {
+void Map::printProbabilities() {
     for (int i = 0; i < this->mazeWidth; i++){
         for (int j = 0; j < this->mazeHeight; j++){
             std::cout << this->data[i][j].probability << ", ";

@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/zarak/catkin_ws/src/project1/src/contest1.cpp" "/home/zarak/catkin_ws/build/project1/CMakeFiles/contest1.dir/src/contest1.cpp.o"
+  "/home/zarak/catkin_ws/src/project1/src/map.cpp" "/home/zarak/catkin_ws/build/project1/CMakeFiles/map.dir/src/map.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -14,6 +14,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
   "ROSCONSOLE_BACKEND_LOG4CXX"
   "ROS_BUILD_SHARED_LIBS=1"
   "ROS_PACKAGE_NAME=\"project1\""
+  "map_EXPORTS"
   )
 
 # The include file search paths:
@@ -26,7 +27,6 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/zarak/catkin_ws/build/project1/CMakeFiles/map.dir/DependInfo.cmake"
   "/home/zarak/catkin_ws/build/project1/matplotplusplus/source/matplot/CMakeFiles/matplot.dir/DependInfo.cmake"
   )
 

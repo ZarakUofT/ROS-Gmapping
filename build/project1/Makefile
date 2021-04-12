@@ -318,21 +318,6 @@ geometry_msgs_generate_messages_cpp/fast:
 .PHONY : geometry_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
-project1/CMakeFiles/maze.dir/rule:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 project1/CMakeFiles/maze.dir/rule
-.PHONY : project1/CMakeFiles/maze.dir/rule
-
-# Convenience name for target.
-maze: project1/CMakeFiles/maze.dir/rule
-
-.PHONY : maze
-
-# fast build rule for target.
-maze/fast:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/maze.dir/build.make project1/CMakeFiles/maze.dir/build
-.PHONY : maze/fast
-
-# Convenience name for target.
 project1/CMakeFiles/roscpp_generate_messages_lisp.dir/rule:
 	cd /home/zarak/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 project1/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
 .PHONY : project1/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
@@ -633,6 +618,21 @@ rosgraph_msgs_generate_messages_nodejs/fast:
 .PHONY : rosgraph_msgs_generate_messages_nodejs/fast
 
 # Convenience name for target.
+project1/CMakeFiles/map.dir/rule:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 project1/CMakeFiles/map.dir/rule
+.PHONY : project1/CMakeFiles/map.dir/rule
+
+# Convenience name for target.
+map: project1/CMakeFiles/map.dir/rule
+
+.PHONY : map
+
+# fast build rule for target.
+map/fast:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/map.dir/build.make project1/CMakeFiles/map.dir/build
+.PHONY : map/fast
+
+# Convenience name for target.
 project1/CMakeFiles/kobuki_msgs_generate_messages_cpp.dir/rule:
 	cd /home/zarak/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 project1/CMakeFiles/kobuki_msgs_generate_messages_cpp.dir/rule
 .PHONY : project1/CMakeFiles/kobuki_msgs_generate_messages_cpp.dir/rule
@@ -839,32 +839,32 @@ src/contest1.cpp.s:
 	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/contest1.dir/build.make project1/CMakeFiles/contest1.dir/src/contest1.cpp.s
 .PHONY : src/contest1.cpp.s
 
-src/maze.o: src/maze.cpp.o
+src/map.o: src/map.cpp.o
 
-.PHONY : src/maze.o
+.PHONY : src/map.o
 
 # target to build an object file
-src/maze.cpp.o:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/maze.dir/build.make project1/CMakeFiles/maze.dir/src/maze.cpp.o
-.PHONY : src/maze.cpp.o
+src/map.cpp.o:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/map.dir/build.make project1/CMakeFiles/map.dir/src/map.cpp.o
+.PHONY : src/map.cpp.o
 
-src/maze.i: src/maze.cpp.i
+src/map.i: src/map.cpp.i
 
-.PHONY : src/maze.i
+.PHONY : src/map.i
 
 # target to preprocess a source file
-src/maze.cpp.i:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/maze.dir/build.make project1/CMakeFiles/maze.dir/src/maze.cpp.i
-.PHONY : src/maze.cpp.i
+src/map.cpp.i:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/map.dir/build.make project1/CMakeFiles/map.dir/src/map.cpp.i
+.PHONY : src/map.cpp.i
 
-src/maze.s: src/maze.cpp.s
+src/map.s: src/map.cpp.s
 
-.PHONY : src/maze.s
+.PHONY : src/map.s
 
 # target to generate assembly for a file
-src/maze.cpp.s:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/maze.dir/build.make project1/CMakeFiles/maze.dir/src/maze.cpp.s
-.PHONY : src/maze.cpp.s
+src/map.cpp.s:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/map.dir/build.make project1/CMakeFiles/map.dir/src/map.cpp.s
+.PHONY : src/map.cpp.s
 
 # Help Target
 help:
@@ -884,7 +884,6 @@ help:
 	@echo "... project1_gencpp"
 	@echo "... geometry_msgs_generate_messages_nodejs"
 	@echo "... geometry_msgs_generate_messages_cpp"
-	@echo "... maze"
 	@echo "... roscpp_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_py"
 	@echo "... sensor_msgs_generate_messages_py"
@@ -909,6 +908,7 @@ help:
 	@echo "... actionlib_msgs_generate_messages_py"
 	@echo "... rosgraph_msgs_generate_messages_nodejs"
 	@echo "... edit_cache"
+	@echo "... map"
 	@echo "... kobuki_msgs_generate_messages_cpp"
 	@echo "... project1_generate_messages_cpp"
 	@echo "... sensor_msgs_generate_messages_nodejs"
@@ -925,9 +925,9 @@ help:
 	@echo "... src/contest1.o"
 	@echo "... src/contest1.i"
 	@echo "... src/contest1.s"
-	@echo "... src/maze.o"
-	@echo "... src/maze.i"
-	@echo "... src/maze.s"
+	@echo "... src/map.o"
+	@echo "... src/map.i"
+	@echo "... src/map.s"
 .PHONY : help
 
 

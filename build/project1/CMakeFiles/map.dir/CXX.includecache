@@ -542,13 +542,9 @@ type_traits
 vector
 -
 
-/home/zarak/catkin_ws/src/project1/src/contest1.cpp
+/home/zarak/catkin_ws/src/project1/src/map.cpp
 map.h
 /home/zarak/catkin_ws/src/project1/src/map.h
-chrono
--
-matplot/matplot.h
--
 
 /home/zarak/catkin_ws/src/project1/src/map.h
 matplot/matplot.h

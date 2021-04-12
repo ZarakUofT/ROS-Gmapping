@@ -38,7 +38,7 @@ struct Cell
     float probability;
 };
 
-class Maze
+class Map
 {
 private:
     uint16_t mazeWidth, mazeHeight;
@@ -65,9 +65,9 @@ private:
     void updateProbability(std::vector<std::pair<int, int>>& points_of_interest);
 
 public:
-    Maze(uint16_t maze_width, uint16_t maze_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y);
+    Map(uint16_t maze_width, uint16_t maze_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y);
 
-    ~Maze();
+    ~Map();
 
     //gets the position of the of the object in the maze
     std::pair<uint16_t, uint16_t> getPos(float pos_x, float pos_y) const;

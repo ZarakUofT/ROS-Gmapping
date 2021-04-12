@@ -79,7 +79,7 @@ contest1_EXTERNAL_OBJECTS =
 
 /home/zarak/catkin_ws/devel/lib/project1/contest1: project1/CMakeFiles/contest1.dir/src/contest1.cpp.o
 /home/zarak/catkin_ws/devel/lib/project1/contest1: project1/CMakeFiles/contest1.dir/build.make
-/home/zarak/catkin_ws/devel/lib/project1/contest1: /home/zarak/catkin_ws/devel/lib/libmaze.so
+/home/zarak/catkin_ws/devel/lib/project1/contest1: /home/zarak/catkin_ws/devel/lib/libmap.so
 /home/zarak/catkin_ws/devel/lib/project1/contest1: /home/zarak/catkin_ws/devel/lib/libmatplot.so
 /home/zarak/catkin_ws/devel/lib/project1/contest1: /opt/ros/noetic/lib/libcv_bridge.so
 /home/zarak/catkin_ws/devel/lib/project1/contest1: /usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.4.2.0

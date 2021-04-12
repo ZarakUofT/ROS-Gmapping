@@ -675,19 +675,6 @@ geometry_msgs_generate_messages_cpp/fast:
 .PHONY : geometry_msgs_generate_messages_cpp/fast
 
 #=============================================================================
-# Target rules for targets named maze
-
-# Build rule for target.
-maze: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 maze
-.PHONY : maze
-
-# fast build rule for target.
-maze/fast:
-	$(MAKE) -f project1/CMakeFiles/maze.dir/build.make project1/CMakeFiles/maze.dir/build
-.PHONY : maze/fast
-
-#=============================================================================
 # Target rules for targets named roscpp_generate_messages_lisp
 
 # Build rule for target.
@@ -946,6 +933,19 @@ rosgraph_msgs_generate_messages_nodejs: cmake_check_build_system
 rosgraph_msgs_generate_messages_nodejs/fast:
 	$(MAKE) -f project1/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make project1/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
 .PHONY : rosgraph_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named map
+
+# Build rule for target.
+map: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 map
+.PHONY : map
+
+# fast build rule for target.
+map/fast:
+	$(MAKE) -f project1/CMakeFiles/map.dir/build.make project1/CMakeFiles/map.dir/build
+.PHONY : map/fast
 
 #=============================================================================
 # Target rules for targets named kobuki_msgs_generate_messages_cpp
@@ -2156,7 +2156,6 @@ help:
 	@echo "... project1_gencpp"
 	@echo "... geometry_msgs_generate_messages_nodejs"
 	@echo "... geometry_msgs_generate_messages_cpp"
-	@echo "... maze"
 	@echo "... roscpp_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_py"
 	@echo "... sensor_msgs_generate_messages_py"
@@ -2177,6 +2176,7 @@ help:
 	@echo "... actionlib_msgs_generate_messages_nodejs"
 	@echo "... actionlib_msgs_generate_messages_py"
 	@echo "... rosgraph_msgs_generate_messages_nodejs"
+	@echo "... map"
 	@echo "... kobuki_msgs_generate_messages_cpp"
 	@echo "... project1_generate_messages_cpp"
 	@echo "... sensor_msgs_generate_messages_nodejs"

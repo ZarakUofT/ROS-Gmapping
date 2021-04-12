@@ -1,4 +1,4 @@
-#include "maze.h"
+#include "map.h"
 #include <chrono>
 #include <matplot/matplot.h>
 
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
     velocity currVel = {0.0, 0.0};
 
-    std::unique_ptr<Maze> maze = std::make_unique<Maze> (600, 600, 0.01, 300, 300, posX, posY);
+    std::unique_ptr<Map> maze = std::make_unique<Map> (600, 600, 0.01, 300, 300, posX, posY);
 
     while(ros::ok()) {
         ros::spinOnce();
