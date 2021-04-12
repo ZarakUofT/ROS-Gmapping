@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
     ros::Subscriber odom = nh.subscribe("odom", 1, &odomCallback);
 
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(20);
 
     geometry_msgs::Twist vel;
 
