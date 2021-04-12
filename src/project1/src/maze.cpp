@@ -35,10 +35,10 @@ void Maze::init_figure()
     this->axes->grid(false);
 }
 
-void Maze::update(float posX, float posY, float yaw, const LaserInfo* laser_data, const float max_range)
+void Maze::update(float posX, float posY, float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
 {
     this->updatePos(posX, posY);
-    this->processLidarData(yaw, laser_data, max_range);
+    this->updateMaze(yaw, laser_data, max_range);
 }
 
 std::pair<uint16_t, uint16_t> Maze::getPos(float pos_x, float pos_y) const
@@ -80,7 +80,7 @@ void Maze::update_image()
     this->axes->draw();
 }
 
-void Maze::processLidarData(float yaw, const LaserInfo* laser_data, const float max_range)
+void Maze::updateMaze(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
 {
     if (!laser_data)
         return;

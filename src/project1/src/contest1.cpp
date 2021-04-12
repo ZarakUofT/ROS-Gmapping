@@ -19,7 +19,7 @@ struct velocity{
 const float MAX_RANGE = 3.5; // in meters
 
 float posX = 0.0, posY = 0.0, yaw = 0.0;
-struct LaserInfo* laserData = new LaserInfo();
+std::shared_ptr<LaserInfo> laserData = std::make_shared<LaserInfo>();
 
 //Callbacks
 void laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg)
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
     velocity currVel = {0.0, 0.0};
 
-    Maze* maze = new Maze(600, 600, 0.01, 300, 300, posX, posY);
+    std::unique_ptr<Maze> maze = std::make_unique<Maze> (600, 600, 0.01, 300, 300, posX, posY);
 
     while(ros::ok()) {
         ros::spinOnce();
@@ -77,9 +77,6 @@ int main(int argc, char **argv)
 
         loop_rate.sleep();
     }
-
-    delete maze;
-    delete laserData;
 
     return 0;
 }

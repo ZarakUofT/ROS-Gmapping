@@ -54,7 +54,7 @@ private:
     void init_maze();
     void init_figure();
 
-    void processLidarData(float yaw, const LaserInfo* laser_data, const float max_range);
+    void updateMaze(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range);
     
     void updatePos(float pos_x, float pos_y);
     void updateOccupancyEstimate(std::vector<std::pair<int, int>>& points_of_interest, bool out_of_range, const uint16_t alpha, const float beta);
@@ -75,7 +75,7 @@ public:
     void draw();
     
     // main update function to update the maze
-    void update(float pos_x, float pos_y, float yaw, const LaserInfo* laser_data, const float max_range);
+    void update(float pos_x, float pos_y, float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range);
 
     void update_image();
 
