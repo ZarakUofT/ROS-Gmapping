@@ -168,19 +168,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-project1/CMakeFiles/contest1.dir/rule:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 project1/CMakeFiles/contest1.dir/rule
-.PHONY : project1/CMakeFiles/contest1.dir/rule
+project1/CMakeFiles/main.dir/rule:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f CMakeFiles/Makefile2 project1/CMakeFiles/main.dir/rule
+.PHONY : project1/CMakeFiles/main.dir/rule
 
 # Convenience name for target.
-contest1: project1/CMakeFiles/contest1.dir/rule
+main: project1/CMakeFiles/main.dir/rule
 
-.PHONY : contest1
+.PHONY : main
 
 # fast build rule for target.
-contest1/fast:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/contest1.dir/build.make project1/CMakeFiles/contest1.dir/build
-.PHONY : contest1/fast
+main/fast:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/main.dir/build.make project1/CMakeFiles/main.dir/build
+.PHONY : main/fast
 
 # Convenience name for target.
 project1/CMakeFiles/project1_genpy.dir/rule:
@@ -812,32 +812,32 @@ actionlib_msgs_generate_messages_lisp/fast:
 	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build.make project1/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build
 .PHONY : actionlib_msgs_generate_messages_lisp/fast
 
-src/contest1.o: src/contest1.cpp.o
+src/main.o: src/main.cpp.o
 
-.PHONY : src/contest1.o
+.PHONY : src/main.o
 
 # target to build an object file
-src/contest1.cpp.o:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/contest1.dir/build.make project1/CMakeFiles/contest1.dir/src/contest1.cpp.o
-.PHONY : src/contest1.cpp.o
+src/main.cpp.o:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/main.dir/build.make project1/CMakeFiles/main.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
 
-src/contest1.i: src/contest1.cpp.i
+src/main.i: src/main.cpp.i
 
-.PHONY : src/contest1.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-src/contest1.cpp.i:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/contest1.dir/build.make project1/CMakeFiles/contest1.dir/src/contest1.cpp.i
-.PHONY : src/contest1.cpp.i
+src/main.cpp.i:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/main.dir/build.make project1/CMakeFiles/main.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
 
-src/contest1.s: src/contest1.cpp.s
+src/main.s: src/main.cpp.s
 
-.PHONY : src/contest1.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-src/contest1.cpp.s:
-	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/contest1.dir/build.make project1/CMakeFiles/contest1.dir/src/contest1.cpp.s
-.PHONY : src/contest1.cpp.s
+src/main.cpp.s:
+	cd /home/zarak/catkin_ws/build && $(MAKE) -f project1/CMakeFiles/main.dir/build.make project1/CMakeFiles/main.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 src/map.o: src/map.cpp.o
 
@@ -874,7 +874,7 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install"
-	@echo "... contest1"
+	@echo "... main"
 	@echo "... project1_genpy"
 	@echo "... project1_generate_messages_py"
 	@echo "... project1_gennodejs"
@@ -922,9 +922,9 @@ help:
 	@echo "... kobuki_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_cpp"
 	@echo "... actionlib_msgs_generate_messages_lisp"
-	@echo "... src/contest1.o"
-	@echo "... src/contest1.i"
-	@echo "... src/contest1.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 	@echo "... src/map.o"
 	@echo "... src/map.i"
 	@echo "... src/map.s"

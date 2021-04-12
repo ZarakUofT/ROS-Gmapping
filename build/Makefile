@@ -545,17 +545,17 @@ turtlebot3_msgs_gencpp/fast:
 .PHONY : turtlebot3_msgs_gencpp/fast
 
 #=============================================================================
-# Target rules for targets named contest1
+# Target rules for targets named main
 
 # Build rule for target.
-contest1: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 contest1
-.PHONY : contest1
+main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 main
+.PHONY : main
 
 # fast build rule for target.
-contest1/fast:
-	$(MAKE) -f project1/CMakeFiles/contest1.dir/build.make project1/CMakeFiles/contest1.dir/build
-.PHONY : contest1/fast
+main/fast:
+	$(MAKE) -f project1/CMakeFiles/main.dir/build.make project1/CMakeFiles/main.dir/build
+.PHONY : main/fast
 
 #=============================================================================
 # Target rules for targets named project1_genpy
@@ -2146,7 +2146,7 @@ help:
 	@echo "... turtlebot3_msgs_geneus"
 	@echo "... _turtlebot3_msgs_generate_messages_check_deps_Sound"
 	@echo "... turtlebot3_msgs_gencpp"
-	@echo "... contest1"
+	@echo "... main"
 	@echo "... project1_genpy"
 	@echo "... project1_generate_messages_py"
 	@echo "... project1_gennodejs"

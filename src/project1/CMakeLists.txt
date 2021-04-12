@@ -33,6 +33,6 @@ target_link_libraries(map matplot)
 add_dependencies(map ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 # add the publisher example
-add_executable(contest1 src/contest1.cpp)
-target_link_libraries(contest1 map matplot ${catkin_LIBRARIES} ${OpenCV_LIB})
+add_executable(main src/main.cpp)
+target_link_libraries(main map matplot ${catkin_LIBRARIES} ${OpenCV_LIB})
 

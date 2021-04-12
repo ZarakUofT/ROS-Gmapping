@@ -85,7 +85,7 @@
 /home/zarak/catkin_ws/build/turtlebot3_simulations/turtlebot3_simulations/CMakeFiles/test.dir
 /home/zarak/catkin_ws/build/project1/CMakeFiles/install/strip.dir
 /home/zarak/catkin_ws/build/project1/CMakeFiles/install.dir
-/home/zarak/catkin_ws/build/project1/CMakeFiles/contest1.dir
+/home/zarak/catkin_ws/build/project1/CMakeFiles/main.dir
 /home/zarak/catkin_ws/build/project1/CMakeFiles/project1_genpy.dir
 /home/zarak/catkin_ws/build/project1/CMakeFiles/project1_generate_messages_py.dir
 /home/zarak/catkin_ws/build/project1/CMakeFiles/project1_gennodejs.dir
