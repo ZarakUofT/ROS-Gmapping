@@ -17,6 +17,7 @@ struct velocity{
 
 //Global Variables
 const float MAX_RANGE = 3.5; // in meters
+const uint16_t MAP_RENDER_CYCLE = 3;
 
 float posX = 0.0, posY = 0.0, yaw = 0.0;
 std::shared_ptr<LaserInfo> laserData = std::make_shared<LaserInfo>();
@@ -59,8 +60,6 @@ int main(int argc, char **argv)
     start = std::chrono::system_clock::now();
     uint64_t secondsElapsed = 0;
 
-    velocity currVel = {0.0, 0.0};
-
     std::unique_ptr<Map> maze = std::make_unique<Map> (600, 600, 0.01, 300, 300, posX, posY);
 
     while(ros::ok()) {
@@ -70,7 +69,7 @@ int main(int argc, char **argv)
 
         secondsElapsed = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now()-start).count();
 
-        if (secondsElapsed > 5){
+        if (secondsElapsed > MAP_RENDER_CYCLE){
             maze->update_image();
             start = std::chrono::system_clock::now();
         }

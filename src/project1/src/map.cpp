@@ -1,11 +1,11 @@
 #include "map.h"
 
-Map::Map(uint16_t maze_width, uint16_t maze_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y)
-    :mazeWidth(maze_width + 2), mazeHeight(maze_height + 2), cellSize(cell_size),
+Map::Map(uint16_t map_width, uint16_t map_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y)
+    :mapWidth(map_width + 2), mapHeight(map_height + 2), cellSize(cell_size),
         refRow(start_row), refCol(start_col)
 {
 
-    this->init_maze();
+    this->init_map();
     this->init_figure();
     this->updatePos(pos_x, pos_y);
 }
@@ -15,13 +15,13 @@ Map::~Map()
 
 }
 
-void Map::init_maze()
+void Map::init_map()
 {
-    this->data.resize(mazeWidth, vector<Cell>(mazeHeight));
+    this->data.resize(mapWidth, vector<Cell>(mapHeight));
     this->initLogit = Math::logit(INIT_PROBABILITY);
 
-    for (int i = 0; i < mazeWidth; i++){
-        for (int j = 0; j < mazeHeight; j++){
+    for (int i = 0; i < mapWidth; i++){
+        for (int j = 0; j < mapHeight; j++){
             this->data[i][j] = {INIT_PROBABILITY, this->initLogit, INIT_PROBABILITY};
         }
     }
@@ -38,7 +38,7 @@ void Map::init_figure()
 void Map::update(float posX, float posY, float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
 {
     this->updatePos(posX, posY);
-    this->updateMaze(yaw, laser_data, max_range);
+    this->updateMap(yaw, laser_data, max_range);
 }
 
 std::pair<uint16_t, uint16_t> Map::getPos(float pos_x, float pos_y) const
@@ -67,10 +67,10 @@ void Map::draw()
 void Map::update_image()
 {
     // Pass vectors of vector of floats as data
-    std::vector<std::vector<float>> plot_data (this->mazeWidth, std::vector<float>(this->mazeHeight));
+    std::vector<std::vector<float>> plot_data (this->mapWidth, std::vector<float>(this->mapHeight));
 
-    for(int i = 0; i < this->mazeWidth; i++){
-        for(int j = 0; j < this->mazeWidth; j++){
+    for(int i = 0; i < this->mapWidth; i++){
+        for(int j = 0; j < this->mapWidth; j++){
             plot_data[i][j] = this->data[i][j].probability;
         }
     }
@@ -80,7 +80,7 @@ void Map::update_image()
     this->axes->draw();
 }
 
-void Map::updateMaze(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
+void Map::updateMap(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
 {
     if (!laser_data)
         return;
@@ -153,8 +153,8 @@ void Map::updateProbability(std::vector<std::pair<int, int>>& points_of_interest
 }
 
 void Map::printProbabilities() {
-    for (int i = 0; i < this->mazeWidth; i++){
-        for (int j = 0; j < this->mazeHeight; j++){
+    for (int i = 0; i < this->mapWidth; i++){
+        for (int j = 0; j < this->mapHeight; j++){
             std::cout << this->data[i][j].probability << ", ";
         }
         std::cout << std::endl;  

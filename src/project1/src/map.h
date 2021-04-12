@@ -1,5 +1,5 @@
-#ifndef MAZE_H
-#define MAZE_H
+#ifndef MAP_H
+#define MAP_H
 
 #include <matplot/matplot.h>
 #include "math.h"
@@ -41,7 +41,7 @@ struct Cell
 class Map
 {
 private:
-    uint16_t mazeWidth, mazeHeight;
+    uint16_t mapWidth, mapHeight;
     uint16_t refRow, refCol;
     uint16_t currRow, currCol;
     vector<vector<Cell>> data;
@@ -51,10 +51,10 @@ private:
     axes_handle axes;
 
     //Functions
-    void init_maze();
+    void init_map();
     void init_figure();
 
-    void updateMaze(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range);
+    void updateMap(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range);
     
     void updatePos(float pos_x, float pos_y);
     void updateOccupancyEstimate(std::vector<std::pair<int, int>>& points_of_interest, bool out_of_range, const uint16_t alpha, const float beta);
@@ -65,16 +65,16 @@ private:
     void updateProbability(std::vector<std::pair<int, int>>& points_of_interest);
 
 public:
-    Map(uint16_t maze_width, uint16_t maze_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y);
+    Map(uint16_t map_width, uint16_t map_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y);
 
     ~Map();
 
-    //gets the position of the of the object in the maze
+    //gets the position of the of the object in the map
     std::pair<uint16_t, uint16_t> getPos(float pos_x, float pos_y) const;
 
     void draw();
     
-    // main update function to update the maze
+    // main update function to update the map
     void update(float pos_x, float pos_y, float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range);
 
     void update_image();
