@@ -14,14 +14,16 @@
 
 #include <chrono>
 
-using std::vector;
+using std::deque;
 using namespace matplot;
 
-//Global Variables
+// Global Variables
 const float INIT_PROBABILITY = 0.5;
 const float NO_INFO_PROBABILITY = 0.5;
 const float OCCUPIED_PROBABILITY = 0.75;
 const float LIKELY_EMPTY_PROBABILITY = 0.25;
+
+const float RESIZE_THESHOLD = 3.5; // in Meters (Make sure lidar range is taken into account)
 
 struct LaserInfo
 {
@@ -36,6 +38,16 @@ struct Cell
     float inverseModel;
     float logit;
     float probability;
+
+    Cell()
+    : inverseModel(INIT_PROBABILITY), logit(0.f), probability(INIT_PROBABILITY){
+
+    }
+
+    Cell(float inverse_model, float log, float prob)
+    : inverseModel(inverse_model), logit(log), probability(prob){
+
+    }
 };
 
 class Map
@@ -44,7 +56,7 @@ private:
     uint16_t mapWidth, mapHeight;
     uint16_t refRow, refCol;
     uint16_t currRow, currCol;
-    vector<vector<Cell>> data;
+    deque<deque<Cell>> data;
     float cellSize;
     float initLogit;
     figure_handle figure;
@@ -64,13 +76,18 @@ private:
     void updateLogitMeasurement(std::vector<std::pair<int, int>>& points_of_interest);
     void updateProbability(std::vector<std::pair<int, int>>& points_of_interest);
 
+    // Check if the map size needs to be increased
+    //Increase the size and return true
+    // return false if not resized
+    bool resizedMap(int row, int col);
+
 public:
     Map(uint16_t map_width, uint16_t map_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y);
 
     ~Map();
 
     //gets the position of the of the object in the map
-    std::pair<uint16_t, uint16_t> getPos(float pos_x, float pos_y) const;
+    std::pair<int, int> getPos(float pos_x, float pos_y) const;
 
     void draw();
     
@@ -81,5 +98,8 @@ public:
 
     // printing/logging functions
     void printProbabilities();
+
+    template<typename T>
+    void Debug(std::string label, std::vector<T> thingsToPrint = {});
 };
 #endif

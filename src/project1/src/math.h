@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <deque>
 #include <math.h>
 #include <limits>
 #include <algorithm>
@@ -77,7 +78,7 @@ void highGradient(int x1, int y1, int x2, int y2, std::vector<std::pair<int, int
     if (dx == 0)
         xi = 0;
 
-    int D = 2 * dy - dx;
+    int D = 2 * dx - dy;
     int x = x1;
 
     for(int i = y1; i <= y2;){
@@ -122,11 +123,11 @@ std::vector<std::pair<int, int>> bresenhamsAlgo(int x1, int y1, int x2, int y2)
 
 // Determine the destination pos in a 2D array given the orientation and range value
 template<typename T>
-std::pair<uint16_t, uint16_t> pos_in_2d_array(const std::vector<std::vector<T>>& m, 
+std::pair<uint16_t, uint16_t> pos_in_2d_array(const std::deque<std::deque<T>>& m, 
     const uint16_t pos_x, const uint16_t pos_y, 
     const float yaw, const float phi, float range, const float r_max)
 {
-    if (!m.size())
+    if (!m.size() || !m[0].size())
         return {};
 
     int row = pos_x, col = pos_y;
@@ -177,7 +178,27 @@ std::vector<float> linspace(const float x1, const float x2, const int n)
         val += diff;
     }
     return retval;
-} 
+}
+
+// this resizes the passed vector and keeps ints current contents in the center
+// resizes the front and back by the given amount
+template<typename T>
+bool resizeDeq(std::deque<std::deque<T>>& deq, uint16_t resize_by_width, uint16_t resize_by_height) 
+{
+    if (deq.empty())
+        deq = {{T()}};
+    // insert at the front
+    deq.insert(deq.begin(), resize_by_width, std::deque<T>(deq[0].size()));
+    deq.insert(deq.end(), resize_by_width, std::deque<T>(deq[0].size()));
+    for (int i = 0; i < deq.size(); i++){
+        deq[i].insert(deq[i].begin(), resize_by_height, T());
+    }
+    for (int i = 0; i < deq.size(); i++){
+        deq[i].insert(deq[i].end(), resize_by_height, T());
+    }
+
+    return true;
+}
 
 }
 

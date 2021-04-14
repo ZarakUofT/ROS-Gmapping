@@ -17,12 +17,12 @@ Map::~Map()
 
 void Map::init_map()
 {
-    this->data.resize(mapWidth, vector<Cell>(mapHeight));
+    this->data.resize(mapWidth, deque<Cell>(mapHeight));
     this->initLogit = Math::logit(INIT_PROBABILITY);
 
     for (int i = 0; i < mapWidth; i++){
         for (int j = 0; j < mapHeight; j++){
-            this->data[i][j] = {INIT_PROBABILITY, this->initLogit, INIT_PROBABILITY};
+            this->data[i][j] = Cell(INIT_PROBABILITY, this->initLogit, INIT_PROBABILITY);
         }
     }
 }
@@ -41,22 +41,28 @@ void Map::update(float posX, float posY, float yaw, const std::shared_ptr<LaserI
     this->updateMap(yaw, laser_data, max_range);
 }
 
-std::pair<uint16_t, uint16_t> Map::getPos(float pos_x, float pos_y) const
+std::pair<int, int> Map::getPos(float pos_x, float pos_y) const
 {
-    uint16_t row, col;
+    int row, col;
 
-    row = this->refRow + (uint16_t)(pos_x / this->cellSize);
-    col = this->refCol + (uint16_t)(pos_y / this->cellSize);
+    row = this->refRow + (int)(pos_x / this->cellSize);
+    col = this->refCol + (int)(pos_y / this->cellSize);
 
     return std::make_pair(row, col);
 }
 
 void Map::updatePos(float pos_x, float pos_y)
 {
-    std::pair<uint16_t, uint16_t> pos = this->getPos(pos_x, pos_y);
+    std::pair<int, int> pos = this->getPos(pos_x, pos_y);
 
-    this->currRow = pos.first;
-    this->currCol = pos.second;    
+    if (this->resizedMap(pos.first, pos.second)){ 
+        // find the correct pos again upon resize
+        pos = this->getPos(pos_x, pos_y);
+    }
+
+    // should be a non-negative value by this point, so unsigned conversion should be fine
+    this->currRow = (uint16_t) pos.first;
+    this->currCol = (uint16_t) pos.second;    
 }
 
 void Map::draw()
@@ -159,4 +165,34 @@ void Map::printProbabilities() {
         }
         std::cout << std::endl;  
     }    
+}
+
+bool Map::resizedMap(int row, int col) {
+    // Check if map needs resizing
+    int resize_thresh_low = static_cast<int>((RESIZE_THESHOLD / this->cellSize));
+    int resize_thresh_high = this->mapWidth + resize_thresh_low;
+
+    if (row <= resize_thresh_low || col <= resize_thresh_low ||
+        row >= resize_thresh_high || col >= resize_thresh_high) 
+    {
+        Math::resizeDeq(this->data, resize_thresh_low, resize_thresh_low);
+        this->mapWidth = this->data.size();
+        this->mapHeight = this->data[0].size();
+        this->refRow = this->mapWidth / 2;
+        this->refCol = this->mapHeight / 2;
+
+        return true;
+    }
+    
+    return false;
+}
+
+template<typename T>
+void Map::Debug(std::string label, std::vector<T> thingsToPrint) {
+    std::cout << label << ": ";
+
+    for (auto &i : thingsToPrint){
+        std::cout << i << ", ";
+    }
+    std::cout << std::endl;
 }

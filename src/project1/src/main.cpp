@@ -17,7 +17,10 @@ struct velocity{
 
 //Global Variables
 const float MAX_RANGE = 3.5; // in meters
-const uint16_t MAP_RENDER_CYCLE = 5;
+const uint16_t MAP_RENDER_CYCLE = 3;
+const uint16_t DEFAULT_MAP_WIDTH = 600;
+const uint16_t DEFAULT_MAP_HEIGHT = 600;
+const float DEFAULT_MAP_RESOLUTION = 0.01; // 1cm
 
 float posX = 0.0, posY = 0.0, yaw = 0.0;
 std::shared_ptr<LaserInfo> laserData = std::make_shared<LaserInfo>();
@@ -61,7 +64,8 @@ int main(int argc, char **argv)
     uint64_t secondsElapsed = 0;
 
     // TODO: Make the size of map dynamic as the car explores the environment
-    std::unique_ptr<Map> map = std::make_unique<Map>(600, 600, 0.01, 300, 300, posX, posY);
+    std::unique_ptr<Map> map = std::make_unique<Map>(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, 
+                DEFAULT_MAP_RESOLUTION, DEFAULT_MAP_WIDTH / 2, DEFAULT_MAP_HEIGHT / 2, posX, posY);
 
     while(ros::ok()) {
         ros::spinOnce();
