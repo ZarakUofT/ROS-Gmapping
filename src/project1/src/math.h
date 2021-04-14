@@ -47,6 +47,7 @@ void lowGradient(int x1, int y1, int x2, int y2, std::vector<std::pair<int, int>
 
     int D = 2 * dy - dx;
     int y = y1;
+    int incr = (x1 > x2) ? -1 : 1;
 
     for(int i = x1; i <= x2;){
         res.push_back(std::make_pair(i, y));
@@ -56,11 +57,7 @@ void lowGradient(int x1, int y1, int x2, int y2, std::vector<std::pair<int, int>
         }else{
             D = D + 2*dy;
         }
-
-        if (x1 > x2)
-            i--;
-        else
-            i++;
+        i += incr;
     }
 }
 
@@ -80,6 +77,7 @@ void highGradient(int x1, int y1, int x2, int y2, std::vector<std::pair<int, int
 
     int D = 2 * dx - dy;
     int x = x1;
+    int incr = (y1 > y2) ? -1 : 1;
 
     for(int i = y1; i <= y2;){
         res.push_back(std::make_pair(x, i));
@@ -89,11 +87,7 @@ void highGradient(int x1, int y1, int x2, int y2, std::vector<std::pair<int, int
         }else{
             D = D + 2*dx;
         }
-
-        if (y1 > y2)
-            i--;
-        else
-            i++;
+        i += incr;
     }
 }
 
