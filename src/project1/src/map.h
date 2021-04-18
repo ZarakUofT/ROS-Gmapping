@@ -88,8 +88,6 @@ public:
 
     //gets the position of the of the object in the map
     std::pair<int, int> getPos(float pos_x, float pos_y) const;
-
-    void draw();
     
     // main update function to update the map
     void update(float pos_x, float pos_y, float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range);

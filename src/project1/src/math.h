@@ -7,6 +7,7 @@
 #include <math.h>
 #include <limits>
 #include <algorithm>
+#include <memory>
 
 namespace Math
 {
@@ -116,12 +117,11 @@ std::vector<std::pair<int, int>> bresenhamsAlgo(int x1, int y1, int x2, int y2)
 }
 
 // Determine the destination pos in a 2D array given the orientation and range value
-template<typename T>
-std::pair<uint16_t, uint16_t> pos_in_2d_array(const std::deque<std::deque<T>>& m, 
+std::pair<uint16_t, uint16_t> pos_in_2d_array(const uint16_t map_width, const uint16_t map_height, 
     const uint16_t pos_x, const uint16_t pos_y, 
     const float yaw, const float phi, float range, const float r_max)
 {
-    if (!m.size() || !m[0].size())
+    if (!map_width || !map_height)
         return {};
 
     int row = pos_x, col = pos_y;
@@ -134,13 +134,13 @@ std::pair<uint16_t, uint16_t> pos_in_2d_array(const std::deque<std::deque<T>>& m
 
     if (row < 0)
         row = 0;
-    else if (row > m.size() - 1)
-        row = m.size() - 1;
+    else if (row > map_width - 1)
+        row = map_width - 1;
     
     if (col < 0)
         col = 0;
-    else if (col > m[0].size() - 1)
-        col = m[0].size() - 1;
+    else if (col > map_height - 1)
+        col = map_height - 1;
     
     return std::make_pair((uint16_t)row, (uint16_t)col);
 }

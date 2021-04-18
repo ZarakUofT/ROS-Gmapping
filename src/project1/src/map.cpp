@@ -56,6 +56,11 @@ void Map::updatePos(float pos_x, float pos_y)
     std::pair<int, int> pos = this->getPos(pos_x, pos_y);
 
     if (this->resizedMap(pos.first, pos.second)){ 
+        this->mapWidth = this->data.size();
+        this->mapHeight = this->data[0].size();
+        this->refRow = this->mapWidth / 2;
+        this->refCol = this->mapHeight / 2;
+
         // find the correct pos again upon resize
         pos = this->getPos(pos_x, pos_y);
     }
@@ -63,11 +68,6 @@ void Map::updatePos(float pos_x, float pos_y)
     // should be a non-negative value by this point, so unsigned conversion should be fine
     this->currRow = (uint16_t) pos.first;
     this->currCol = (uint16_t) pos.second;    
-}
-
-void Map::draw()
-{
-    this->figure->draw();
 }
 
 void Map::update_image()
@@ -102,7 +102,7 @@ void Map::updateMap(float yaw, const std::shared_ptr<LaserInfo> laser_data, cons
     float phi = laser_data->angleMin;
     for (int i = 0; i < laser_data->range_data.size(); i++){
         dest = Math::pos_in_2d_array(
-            this->data, this->currRow, this->currCol, yaw, phi, 
+            this->mapWidth, this->mapHeight, this->currRow, this->currCol, yaw, phi, 
             laser_data->range_data[i] / this->cellSize, max_range / this->cellSize
         );
         
@@ -176,11 +176,6 @@ bool Map::resizedMap(int row, int col) {
         row >= resize_thresh_high || col >= resize_thresh_high) 
     {
         Math::resizeDeq(this->data, resize_thresh_low, resize_thresh_low);
-        this->mapWidth = this->data.size();
-        this->mapHeight = this->data[0].size();
-        this->refRow = this->mapWidth / 2;
-        this->refCol = this->mapHeight / 2;
-
         return true;
     }
     
