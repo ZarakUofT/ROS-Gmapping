@@ -11,6 +11,7 @@
 #include <nav_msgs/Odometry.h>
 #include <tf/transform_datatypes.h>
 #include <cmath>
+#include <fstream>
 
 #include <chrono>
 
@@ -62,10 +63,15 @@ private:
     figure_handle figure;
     axes_handle axes;
 
-    // Held for plotting for graph
+    // Held for plotting for graph on a different thread
     std::future<bool> futurePlotThread;
     bool threadCreatedForPlotting;
     bool stillPlotting;
+
+    // Held saving probabiltiy data onto a file with a diff thread
+    std::future<bool> futureFileSaveThread;
+    bool threadCreatedForSaving;
+    bool stillSaving;
 
     //Functions
     void init_map();
@@ -99,6 +105,9 @@ public:
 
     void update_image();
 
+    // This function saves map data to a file
+    void save_data(const std::string& fileName);
+
     // printing/logging functions
     void printProbabilities();
 
@@ -110,6 +119,7 @@ public:
 
 // This function is called in a different thread to plot heatmap for probability of 
 // occupancy of the map
-bool display_image(std::shared_ptr<std::vector<std::vector<float>>> plot_data, axes_handle& axes);
+bool display_image_thread_func(std::shared_ptr<std::vector<std::vector<float>>> plot_data, axes_handle& axes);
+bool save_data_thread_func(std::shared_ptr<std::vector<std::vector<int>>> plot_data, const std::string& fileName);
 
 #endif

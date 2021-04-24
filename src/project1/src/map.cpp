@@ -22,7 +22,8 @@ void Map::init_figure()
 
 Map::Map(uint16_t map_width, uint16_t map_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y)
     :mapWidth(map_width + 2), mapHeight(map_height + 2), cellSize(cell_size),
-        refRow(start_row), refCol(start_col), stillPlotting(false), threadCreatedForPlotting(false)
+        refRow(start_row), refCol(start_col), stillPlotting(false), threadCreatedForPlotting(false),
+        stillSaving(false), threadCreatedForSaving(false)
 {
 
     this->init_map();
@@ -168,18 +169,53 @@ void Map::update_image()
 
     for(int i = 0; i < this->mapWidth; i++){
         for(int j = 0; j < this->mapWidth; j++){
-            plot_data[i][j] = this->data[i][j].probability;
+            if (this->data[i][j].probability < 0.3)
+                plot_data[i][j] = 0.0;
+            else if (this->data[i][j].probability > 0.75)
+                plot_data[i][j] = 1.0;
+            else
+                plot_data[i][j] = 0.5;
         }
     }
 
-    std::shared_ptr<std::vector<std::vector<float>>> plot_data_ptr = \
-        std::make_shared<std::vector<std::vector<float>>>(plot_data);
+    auto plot_data_ptr = std::make_shared<std::vector<std::vector<float>>>(plot_data);
 
     // Start a new thread
-    this->futurePlotThread = std::async(std::launch::async, display_image, plot_data_ptr, std::ref(this->axes));
+    this->futurePlotThread = std::async(std::launch::async, display_image_thread_func, plot_data_ptr, std::ref(this->axes));
     this->threadCreatedForPlotting = true;
 
-    std::cout << "Continuing to main thread" << std::endl;
+    std::cout << "Continuing to main thread from Plotting thread" << std::endl;
+}
+
+void Map::save_data(const std::string& fileName) {
+
+
+    if (this->threadCreatedForSaving)
+        this->stillSaving = this->futureFileSaveThread.wait_for(std::chrono::seconds(0))!=std::future_status::ready;
+    if (this->stillSaving)
+        return;
+
+    // Pass vectors of vector of floats as data
+    std::vector<std::vector<int>> prob_data (this->mapWidth, std::vector<int>(this->mapHeight));
+
+    for(int i = 0; i < this->mapWidth; i++){
+        for(int j = 0; j < this->mapWidth; j++){
+            if (this->data[i][j].probability < 0.3)
+                prob_data[i][j] = 0;
+            else if (this->data[i][j].probability > 0.75)
+                prob_data[i][j] = 1;
+            else
+                prob_data[i][j] = -1; // unexplored
+        }
+    }
+
+    auto save_data_ptr = std::make_shared<std::vector<std::vector<int>>>(prob_data);
+
+    // Start a new thread
+    this->futureFileSaveThread = std::async(std::launch::async, save_data_thread_func, save_data_ptr, std::ref(fileName));
+    this->threadCreatedForPlotting = true;
+
+    std::cout << "Continuing to main thread from Save Data Thread" << std::endl;
 }
 
 template<typename T>
@@ -204,12 +240,32 @@ void Map::printProbabilities() {
 /* 
     Non-class Functions
 */
-bool display_image(std::shared_ptr<std::vector<std::vector<float>>> plot_data, axes_handle& axes) {
+bool display_image_thread_func(std::shared_ptr<std::vector<std::vector<float>>> plot_data, axes_handle& axes) {
     if (!plot_data)
         return false;
     axes->image(*plot_data, true);
     axes->color_box(true);
     axes->draw();
 
+    return true;
+}
+
+bool save_data_thread_func(std::shared_ptr<std::vector<std::vector<int>>> prob_data, const std::string& fileName) {
+    std::ofstream outdata;
+    auto& data = *prob_data;
+
+    outdata.open(fileName, std::ios::trunc);
+
+    if (!outdata){ // file couldn't be opened
+        std::cerr << "Error: file could not be opened" << std::endl;
+        return false;
+    }
+
+    for(int i = 0; i < data.size(); i++){
+        for(int j = 0; j < data.size(); j++){
+            outdata << data[i][j] << ",";
+        }
+        outdata << "\n";
+    }
     return true;
 }

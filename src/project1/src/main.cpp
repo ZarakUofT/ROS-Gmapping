@@ -18,7 +18,8 @@ struct velocity{
 //Global Variables
 const float MAX_RANGE = 3.5; // in meters
 const uint16_t MAP_RENDER_CYCLE = 5;
-const float DEFAULT_MAP_RESOLUTION = 0.05; // 1cm
+const uint16_t MAP_SAVE_CYCLE = 30;
+const float DEFAULT_MAP_RESOLUTION = 0.01; // 1cm
 const uint16_t DEFAULT_MAP_LENGTH = 6; // Meters
 const uint16_t DEFAULT_MAP_BREADTH = 6; // Meters
 const uint16_t DEFAULT_MAP_WIDTH = static_cast<uint16_t>(static_cast<float>(DEFAULT_MAP_LENGTH) / 
@@ -49,8 +50,6 @@ void odomCallback(const nav_msgs::Odometry::ConstPtr & msg){
 
 int main(int argc, char **argv)
 {
-    using namespace matplot;
-
     ros::init(argc, argv, "maze_explorer");
     ros::NodeHandle nh;
     ros::Subscriber laser_sub = nh.subscribe("scan", 10, &laserCallback);
@@ -63,9 +62,11 @@ int main(int argc, char **argv)
 
     geometry_msgs::Twist vel;
 
-    std::chrono::time_point<std::chrono::system_clock> start;
-    start = std::chrono::system_clock::now();
-    uint64_t secondsElapsed = 0;
+    auto start1 = std::chrono::system_clock::now();
+    auto start2 = std::chrono::system_clock::now();
+
+    uint64_t secondsElapsed1 = 0;
+    uint64_t secondsElapsed2 = 0;
 
     std::unique_ptr<Map> map = std::make_unique<Map>(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, 
                 DEFAULT_MAP_RESOLUTION, DEFAULT_MAP_WIDTH / 2, DEFAULT_MAP_HEIGHT / 2, posX, posY);
@@ -75,11 +76,17 @@ int main(int argc, char **argv)
 
         map->update(posX, posY, yaw, laserData, MAX_RANGE);
 
-        secondsElapsed = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now()-start).count();
+        secondsElapsed1 = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now()-start1).count();
+        secondsElapsed2 = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now()-start2).count();
 
-        if (secondsElapsed > MAP_RENDER_CYCLE){
+        if (secondsElapsed1 > MAP_RENDER_CYCLE){
             map->update_image();
-            start = std::chrono::system_clock::now();
+            start1 = std::chrono::system_clock::now();
+        }
+
+        if (secondsElapsed2 > MAP_SAVE_CYCLE){
+            map->save_data("/home/zarak/catkin_ws/src/project1/src/Grid_Occupancy.txt");
+            start2 = std::chrono::system_clock::now();
         }
 
         loop_rate.sleep();
