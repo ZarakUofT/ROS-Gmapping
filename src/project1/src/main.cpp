@@ -18,9 +18,13 @@ struct velocity{
 //Global Variables
 const float MAX_RANGE = 3.5; // in meters
 const uint16_t MAP_RENDER_CYCLE = 5;
-const uint16_t DEFAULT_MAP_WIDTH = 600;
-const uint16_t DEFAULT_MAP_HEIGHT = 600;
-const float DEFAULT_MAP_RESOLUTION = 0.01; // 1cm
+const float DEFAULT_MAP_RESOLUTION = 0.05; // 1cm
+const uint16_t DEFAULT_MAP_LENGTH = 6; // Meters
+const uint16_t DEFAULT_MAP_BREADTH = 6; // Meters
+const uint16_t DEFAULT_MAP_WIDTH = static_cast<uint16_t>(static_cast<float>(DEFAULT_MAP_LENGTH) / 
+                                   DEFAULT_MAP_RESOLUTION); //  Grid cells
+const uint16_t DEFAULT_MAP_HEIGHT = static_cast<uint16_t>(static_cast<float>(DEFAULT_MAP_BREADTH) / 
+                                    DEFAULT_MAP_RESOLUTION); // Grid Cells
 
 float posX = 0.0, posY = 0.0, yaw = 0.0;
 std::shared_ptr<LaserInfo> laserData = std::make_shared<LaserInfo>();
@@ -63,7 +67,6 @@ int main(int argc, char **argv)
     start = std::chrono::system_clock::now();
     uint64_t secondsElapsed = 0;
 
-    // TODO: Make the size of map dynamic as the car explores the environment
     std::unique_ptr<Map> map = std::make_unique<Map>(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, 
                 DEFAULT_MAP_RESOLUTION, DEFAULT_MAP_WIDTH / 2, DEFAULT_MAP_HEIGHT / 2, posX, posY);
 

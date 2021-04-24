@@ -1,20 +1,5 @@
 #include "map.h"
 
-Map::Map(uint16_t map_width, uint16_t map_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y)
-    :mapWidth(map_width + 2), mapHeight(map_height + 2), cellSize(cell_size),
-        refRow(start_row), refCol(start_col)
-{
-
-    this->init_map();
-    this->init_figure();
-    this->updatePos(pos_x, pos_y);
-}
-
-Map::~Map()
-{
-
-}
-
 void Map::init_map()
 {
     this->data.resize(mapWidth, deque<Cell>(mapHeight));
@@ -35,6 +20,21 @@ void Map::init_figure()
     this->axes->grid(false);
 }
 
+Map::Map(uint16_t map_width, uint16_t map_height, float cell_size, uint16_t start_row, uint16_t start_col, float pos_x, float pos_y)
+    :mapWidth(map_width + 2), mapHeight(map_height + 2), cellSize(cell_size),
+        refRow(start_row), refCol(start_col), stillPlotting(false), threadCreatedForPlotting(false)
+{
+
+    this->init_map();
+    this->init_figure();
+    this->updatePos(pos_x, pos_y);
+}
+
+Map::~Map()
+{
+
+}
+
 void Map::update(float posX, float posY, float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
 {
     this->updatePos(posX, posY);
@@ -49,6 +49,21 @@ std::pair<int, int> Map::getPos(float pos_x, float pos_y) const
     col = this->refCol + (int)(pos_y / this->cellSize);
 
     return std::make_pair(row, col);
+}
+
+bool Map::resizedMap(int row, int col) {
+    // Check if map needs resizing
+    int resize_thresh_low = static_cast<int>((RESIZE_THESHOLD / this->cellSize));
+    int resize_thresh_high = this->mapWidth + resize_thresh_low;
+
+    if (row <= resize_thresh_low || col <= resize_thresh_low ||
+        row >= resize_thresh_high || col >= resize_thresh_high) 
+    {
+        Math::resizeDeq(this->data, resize_thresh_low, resize_thresh_low);
+        return true;
+    }
+    
+    return false;
 }
 
 void Map::updatePos(float pos_x, float pos_y)
@@ -68,22 +83,6 @@ void Map::updatePos(float pos_x, float pos_y)
     // should be a non-negative value by this point, so unsigned conversion should be fine
     this->currRow = (uint16_t) pos.first;
     this->currCol = (uint16_t) pos.second;    
-}
-
-void Map::update_image()
-{
-    // Pass vectors of vector of floats as data
-    std::vector<std::vector<float>> plot_data (this->mapWidth, std::vector<float>(this->mapHeight));
-
-    for(int i = 0; i < this->mapWidth; i++){
-        for(int j = 0; j < this->mapWidth; j++){
-            plot_data[i][j] = this->data[i][j].probability;
-        }
-    }
-
-    this->axes->image(plot_data, true);
-    this->axes->color_box(true);
-    this->axes->draw();
 }
 
 void Map::updateMap(float yaw, const std::shared_ptr<LaserInfo> laser_data, const float max_range)
@@ -158,28 +157,29 @@ void Map::updateProbability(std::vector<std::pair<int, int>>& points_of_interest
     }
 }
 
-void Map::printProbabilities() {
-    for (int i = 0; i < this->mapWidth; i++){
-        for (int j = 0; j < this->mapHeight; j++){
-            std::cout << this->data[i][j].probability << ", ";
+void Map::update_image()
+{
+    if (this->threadCreatedForPlotting)
+        this->stillPlotting = this->futurePlotThread.wait_for(std::chrono::seconds(0))!=std::future_status::ready;
+    if (this->stillPlotting)
+        return;
+    // Pass vectors of vector of floats as data
+    std::vector<std::vector<float>> plot_data (this->mapWidth, std::vector<float>(this->mapHeight));
+
+    for(int i = 0; i < this->mapWidth; i++){
+        for(int j = 0; j < this->mapWidth; j++){
+            plot_data[i][j] = this->data[i][j].probability;
         }
-        std::cout << std::endl;  
-    }    
-}
-
-bool Map::resizedMap(int row, int col) {
-    // Check if map needs resizing
-    int resize_thresh_low = static_cast<int>((RESIZE_THESHOLD / this->cellSize));
-    int resize_thresh_high = this->mapWidth + resize_thresh_low;
-
-    if (row <= resize_thresh_low || col <= resize_thresh_low ||
-        row >= resize_thresh_high || col >= resize_thresh_high) 
-    {
-        Math::resizeDeq(this->data, resize_thresh_low, resize_thresh_low);
-        return true;
     }
-    
-    return false;
+
+    std::shared_ptr<std::vector<std::vector<float>>> plot_data_ptr = \
+        std::make_shared<std::vector<std::vector<float>>>(plot_data);
+
+    // Start a new thread
+    this->futurePlotThread = std::async(std::launch::async, display_image, plot_data_ptr, std::ref(this->axes));
+    this->threadCreatedForPlotting = true;
+
+    std::cout << "Continuing to main thread" << std::endl;
 }
 
 template<typename T>
@@ -190,4 +190,26 @@ void Map::Debug(std::string label, std::vector<T> thingsToPrint) {
         std::cout << i << ", ";
     }
     std::cout << std::endl;
+}
+
+void Map::printProbabilities() {
+    for (int i = 0; i < this->mapWidth; i++){
+        for (int j = 0; j < this->mapHeight; j++){
+            std::cout << this->data[i][j].probability << ", ";
+        }
+        std::cout << std::endl;  
+    }    
+}
+
+/* 
+    Non-class Functions
+*/
+bool display_image(std::shared_ptr<std::vector<std::vector<float>>> plot_data, axes_handle& axes) {
+    if (!plot_data)
+        return false;
+    axes->image(*plot_data, true);
+    axes->color_box(true);
+    axes->draw();
+
+    return true;
 }

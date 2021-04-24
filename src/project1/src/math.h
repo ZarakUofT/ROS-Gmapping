@@ -8,6 +8,7 @@
 #include <limits>
 #include <algorithm>
 #include <memory>
+#include <future>
 
 namespace Math
 {

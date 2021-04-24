@@ -62,6 +62,11 @@ private:
     figure_handle figure;
     axes_handle axes;
 
+    // Held for plotting for graph
+    std::future<bool> futurePlotThread;
+    bool threadCreatedForPlotting;
+    bool stillPlotting;
+
     //Functions
     void init_map();
     void init_figure();
@@ -100,4 +105,11 @@ public:
     template<typename T>
     void Debug(std::string label, std::vector<T> thingsToPrint = {});
 };
+
+// Prototypes for functions
+
+// This function is called in a different thread to plot heatmap for probability of 
+// occupancy of the map
+bool display_image(std::shared_ptr<std::vector<std::vector<float>>> plot_data, axes_handle& axes);
+
 #endif
