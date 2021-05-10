@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(project1)
+project(gmapping)
 
 add_compile_options(-std=c++11)
 
@@ -16,7 +16,9 @@ find_package(catkin REQUIRED COMPONENTS
 
 generate_messages(DEPENDENCIES sensor_msgs kobuki_msgs)
 
-# Download matplotplus library on the go
+# Download matplotplus library on the go if does not exist
+find_package(Matplot++ QUIET)
+if(NOT Matplot++_FOUND)
 include(FetchContent)
 FetchContent_Declare(matplotplusplus
         GIT_REPOSITORY https://github.com/alandefreitas/matplotplusplus
@@ -27,7 +29,7 @@ if(NOT matplotplusplus_POPULATED)
     FetchContent_Populate(matplotplusplus)
     add_subdirectory(${matplotplusplus_SOURCE_DIR} ${matplotplusplus_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
-
+endif()
 
 catkin_package()
 
