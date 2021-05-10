@@ -16,11 +16,22 @@ find_package(catkin REQUIRED COMPONENTS
 
 generate_messages(DEPENDENCIES sensor_msgs kobuki_msgs)
 
+# Download matplotplus library on the go
+include(FetchContent)
+FetchContent_Declare(matplotplusplus
+        GIT_REPOSITORY https://github.com/alandefreitas/matplotplusplus
+        GIT_TAG origin/master) # or whatever tag you want
+        
+        FetchContent_GetProperties(matplotplusplus)
+if(NOT matplotplusplus_POPULATED)
+    FetchContent_Populate(matplotplusplus)
+    add_subdirectory(${matplotplusplus_SOURCE_DIR} ${matplotplusplus_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
+
 catkin_package()
 
 include_directories(${OpenCV_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
-
-add_subdirectory(matplotplusplus)
 
 add_library(map
     src/map.h
