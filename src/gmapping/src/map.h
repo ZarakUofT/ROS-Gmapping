@@ -120,6 +120,7 @@ public:
 // This function is called in a different thread to plot heatmap for probability of 
 // occupancy of the map
 bool display_image_thread_func(std::shared_ptr<std::vector<std::vector<float>>> plot_data, axes_handle& axes);
-bool save_data_thread_func(std::shared_ptr<std::vector<std::vector<int>>> plot_data, const std::string& fileName);
+bool save_data_thread_func(std::shared_ptr<std::vector<std::vector<int>>> plot_data, const std::string& fileName, 
+                            float cell_size);
 
 #endif

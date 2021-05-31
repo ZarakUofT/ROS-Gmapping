@@ -212,7 +212,7 @@ void Map::save_data(const std::string& fileName) {
     auto save_data_ptr = std::make_shared<std::vector<std::vector<int>>>(prob_data);
 
     // Start a new thread
-    this->futureFileSaveThread = std::async(std::launch::async, save_data_thread_func, save_data_ptr, std::ref(fileName));
+    this->futureFileSaveThread = std::async(std::launch::async, save_data_thread_func, save_data_ptr, std::ref(fileName), this->cellSize);
     this->threadCreatedForPlotting = true;
 
     std::cout << "Continuing to main thread from Save Data Thread" << std::endl;
@@ -250,7 +250,8 @@ bool display_image_thread_func(std::shared_ptr<std::vector<std::vector<float>>> 
     return true;
 }
 
-bool save_data_thread_func(std::shared_ptr<std::vector<std::vector<int>>> prob_data, const std::string& fileName) {
+bool save_data_thread_func(std::shared_ptr<std::vector<std::vector<int>>> prob_data, const std::string& fileName, 
+                            float cell_size) {
     std::ofstream outdata;
     auto& data = *prob_data;
 
@@ -260,6 +261,9 @@ bool save_data_thread_func(std::shared_ptr<std::vector<std::vector<int>>> prob_d
         std::cerr << "Error: file could not be opened" << std::endl;
         return false;
     }
+
+    // save map resolution in meters
+    outdata << cell_size << "\n";
 
     for(int i = 0; i < data.size(); i++){
         for(int j = 0; j < data.size(); j++){

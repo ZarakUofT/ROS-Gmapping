@@ -85,7 +85,7 @@ int main(int argc, char **argv)
         }
 
         if (secondsElapsed2 > MAP_SAVE_CYCLE){
-            map->save_data("/home/zarak/catkin_ws/src/project1/src/Grid_Occupancy.txt");
+            map->save_data("/home/zarak/gmapping/src/gmapping/src/Grid_Occupancy.txt");
             start2 = std::chrono::system_clock::now();
         }
 
